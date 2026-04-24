@@ -1,0 +1,45 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision - 12;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000001a39a502ce0 .scope module, "hello_tb" "hello_tb" 2 3;
+ .timescale -9 -12;
+v000001a39a6cee20_0 .var "A", 0 0;
+v000001a39a6ceec0_0 .net "B", 0 0, L_000001a39a6cef60;  1 drivers
+S_000001a39a502e70 .scope module, "uut" "hello" 2 9, 3 1 0, S_000001a39a502ce0;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "A";
+    .port_info 1 /OUTPUT 1 "B";
+L_000001a39a6cef60 .functor BUFZ 1, v000001a39a6cee20_0, C4<0>, C4<0>, C4<0>;
+v000001a39a503000_0 .net "A", 0 0, v000001a39a6cee20_0;  1 drivers
+v000001a39a5030a0_0 .net "B", 0 0, L_000001a39a6cef60;  alias, 1 drivers
+    .scope S_000001a39a502ce0;
+T_0 ;
+    %vpi_call 2 15 "$display", "Time\011A\011B" {0 0 0};
+    %vpi_call 2 16 "$monitor", "%0t\011%b\011%b", $time, v000001a39a6cee20_0, v000001a39a6ceec0_0 {0 0 0};
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001a39a6cee20_0, 0, 1;
+    %delay 10000, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001a39a6cee20_0, 0, 1;
+    %delay 10000, 0;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001a39a6cee20_0, 0, 1;
+    %delay 10000, 0;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001a39a6cee20_0, 0, 1;
+    %delay 10000, 0;
+    %vpi_call 2 24 "$finish" {0 0 0};
+    %end;
+    .thread T_0;
+# The file index is used to find the file name in the following table.
+:file_names 4;
+    "N/A";
+    "<interactive>";
+    "testing_tb.v";
+    "testing.v";
