@@ -1,5 +1,5 @@
 $date
-	Thu Apr 23 15:43:40 2026
+	Thu May 07 22:38:42 2026
 $end
 $version
 	Icarus Verilog
@@ -39,14 +39,14 @@ $var wire 1 9 alu_src $end
 $var wire 32 : alu_result [31:0] $end
 $var wire 2 ; alu_op [1:0] $end
 $var wire 32 < alu_input2 [31:0] $end
-$var wire 4 = alu_control_signal [3:0] $end
+$var wire 4 = alu_ctrl [3:0] $end
 $var reg 32 > pc [31:0] $end
 $var integer 32 ? i [31:0] $end
-$scope module alu_ctrl $end
+$scope module alu_control_unit $end
 $var wire 3 @ funct3 [2:0] $end
 $var wire 7 A funct7 [6:0] $end
 $var wire 2 B alu_op [1:0] $end
-$var reg 4 C alu_control_signal [3:0] $end
+$var reg 4 C alu_ctrl [3:0] $end
 $upscope $end
 $scope module control $end
 $var wire 7 D opcode [6:0] $end
@@ -65,7 +65,7 @@ $var reg 32 H imm [31:0] $end
 $upscope $end
 $scope module main_alu $end
 $var wire 32 I a [31:0] $end
-$var wire 4 J alu_control_signal [3:0] $end
+$var wire 4 J alu_ctrl [3:0] $end
 $var wire 32 K b [31:0] $end
 $var wire 1 & zero $end
 $var reg 32 L result [31:0] $end

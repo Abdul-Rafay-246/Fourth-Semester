@@ -1,21 +1,19 @@
 `timescale 1ns/1ps
 
-// Simple single-cycle RISC-V processor.
-// Supported instructions:
-// R-type: add, sub, and, or
-// I-type: addi, lw
-// S-type: sw
-// B-type: beq
+// Basic single cycle RISC-V processor
+// Instructions supported: add, sub, and, or, addi, lw, sw, beq
 
 module processor(
     input clk,
     input reset
 );
+    // Main storage used by the processor
     reg [31:0] pc;
     reg [31:0] instr_mem [0:63];
     reg [31:0] data_mem  [0:63];
     reg [31:0] regs      [0:31];
 
+    // Instruction fields
     wire [31:0] instruction;
     wire [6:0] opcode;
     wire [4:0] rd;
@@ -35,7 +33,7 @@ module processor(
     wire [31:0] read_data1;
     wire [31:0] read_data2;
     wire [31:0] imm;
-    wire [3:0] alu_control_signal;
+    wire [3:0] alu_ctrl;
     wire [31:0] alu_input2;
     wire [31:0] alu_result;
     wire zero;
@@ -49,6 +47,7 @@ module processor(
 
     integer i;
 
+    // pc is a byte address, so pc[7:2] gives the instruction word index
     assign instruction = instr_mem[pc[7:2]];
 
     assign opcode = instruction[6:0];
@@ -74,13 +73,14 @@ module processor(
         .imm(imm)
     );
 
-    alu_control alu_ctrl(
+    alu_control alu_control_unit(
         .alu_op(alu_op),
         .funct3(funct3),
         .funct7(funct7),
-        .alu_control_signal(alu_control_signal)
+        .alu_ctrl(alu_ctrl)
     );
 
+    // Register x0 is always zero
     assign read_data1 = (rs1 == 0) ? 32'b0 : regs[rs1];
     assign read_data2 = (rs2 == 0) ? 32'b0 : regs[rs2];
 
@@ -89,7 +89,7 @@ module processor(
     alu main_alu(
         .a(read_data1),
         .b(alu_input2),
-        .alu_control_signal(alu_control_signal),
+        .alu_ctrl(alu_ctrl),
         .result(alu_result),
         .zero(zero)
     );
@@ -132,6 +132,7 @@ module control_unit(
     output reg reg_write
 );
     always @(*) begin
+        // Default values
         branch = 0;
         mem_read = 0;
         mem_to_reg = 0;
@@ -141,7 +142,7 @@ module control_unit(
         reg_write = 0;
 
         case (opcode)
-            7'b0110011: begin // R-type
+            7'b0110011: begin // add, sub, and, or
                 alu_op = 2'b10;
                 reg_write = 1;
             end
@@ -198,25 +199,25 @@ module alu_control(
     input [1:0] alu_op,
     input [2:0] funct3,
     input [6:0] funct7,
-    output reg [3:0] alu_control_signal
+    output reg [3:0] alu_ctrl
 );
     always @(*) begin
         case (alu_op)
             2'b00:
-                alu_control_signal = 4'b0010; // add for lw, sw, addi
+                alu_ctrl = 4'b0010; // add for lw, sw, addi
             2'b01:
-                alu_control_signal = 4'b0110; // subtract for beq
+                alu_ctrl = 4'b0110; // subtract for beq
             2'b10: begin
                 case ({funct7, funct3})
-                    10'b0000000_000: alu_control_signal = 4'b0010; // add
-                    10'b0100000_000: alu_control_signal = 4'b0110; // sub
-                    10'b0000000_111: alu_control_signal = 4'b0000; // and
-                    10'b0000000_110: alu_control_signal = 4'b0001; // or
-                    default:         alu_control_signal = 4'b0010;
+                    10'b0000000_000: alu_ctrl = 4'b0010; // add
+                    10'b0100000_000: alu_ctrl = 4'b0110; // sub
+                    10'b0000000_111: alu_ctrl = 4'b0000; // and
+                    10'b0000000_110: alu_ctrl = 4'b0001; // or
+                    default:         alu_ctrl = 4'b0010;
                 endcase
             end
             default:
-                alu_control_signal = 4'b0010;
+                alu_ctrl = 4'b0010;
         endcase
     end
 endmodule
@@ -224,12 +225,12 @@ endmodule
 module alu(
     input [31:0] a,
     input [31:0] b,
-    input [3:0] alu_control_signal,
+    input [3:0] alu_ctrl,
     output reg [31:0] result,
     output zero
 );
     always @(*) begin
-        case (alu_control_signal)
+        case (alu_ctrl)
             4'b0000: result = a & b;
             4'b0001: result = a | b;
             4'b0010: result = a + b;

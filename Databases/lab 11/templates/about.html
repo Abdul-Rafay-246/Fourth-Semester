@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About Us</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<div class="page-container">
+    <div class="page-header">
+        <a href="/" class="back-link">Back to Home</a>
+        <h2>About Student Vault</h2>
+        <p class="subtitle">A simple system for storing and viewing student profile records.</p>
+    </div>
+
+    <div class="about-panel">
+        <img
+            src="{{ url_for('static', filename='uploads/alternate_background.png') }}"
+            alt="Blue textured background"
+            class="about-image"
+        >
+
+        <h3>What this project does</h3>
+        <p>
+            Student Vault helps manage student information in one place. It stores basic profile
+            details such as name, major, age, and profile image, then displays those records through
+            a clean student list and an admin panel.
+        </p>
+
+        <div class="about-grid">
+            <div class="info-box">
+                <h4>Student Records</h4>
+                <p>Add student details and keep them organized in the database.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Profile Images</h4>
+                <p>Upload and view profile pictures with each student card.</p>
+            </div>
+
+            <div class="info-box">
+                <h4>Admin Access</h4>
+                <p>Use the admin panel to see the complete profile data in table format.</p>
+            </div>
+        </div>
+
+        <p class="about-note">
+            This project was built as a database lab application using Flask, PostgreSQL, HTML,
+            and CSS.
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

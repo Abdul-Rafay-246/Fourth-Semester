@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Students</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<h2>Students List</h2>
+
+<div class="grid">
+{% for s in students %}
+    <div class="card">
+        <img src="{{ url_for('static', filename='uploads/' + s[3]) }}">
+        <h3>{{ s[1] }}</h3>
+        <p>{{ s[2] }}</p>
+    </div>
+{% endfor %}
+</div>
+
+</body>
+</html>
