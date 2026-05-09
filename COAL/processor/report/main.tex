@@ -88,6 +88,15 @@ The processor contains the following main components:
 
 The first ALU input is taken from \texttt{read\_data1}. The second ALU input is selected using the \texttt{alu\_src} signal. For R-type and branch instructions, the second input is \texttt{read\_data2}. For \texttt{addi}, \texttt{lw}, and \texttt{sw}, the second input is the immediate value.
 
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.48\textwidth]{flowchart.png}
+\caption{Flowchart of the single-cycle processor instruction execution process.}
+\label{fig:processor_flowchart}
+\end{figure}
+
+Fig.~\ref{fig:processor_flowchart} summarizes the instruction flow from reset and instruction fetch to decode, ALU operation, memory access, writeback, and PC update.
+
 \section{Control Signals}
 The control unit decodes the opcode and generates the required control signals. The \texttt{alu\_op} signal is used to select the general ALU operation category. The meaning of \texttt{alu\_op} is shown in Table~\ref{tab:aluop}.
 

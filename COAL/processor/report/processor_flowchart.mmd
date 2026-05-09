@@ -1,0 +1,28 @@
+flowchart TD
+    A([Start]) --> B[Reset processor]
+    B --> C[PC = 0]
+    C --> D[Fetch instruction from instruction memory]
+    D --> E[Decode instruction fields]
+    E --> F[Generate control signals]
+    F --> G[Generate immediate value]
+    G --> H[Read register values rs1 and rs2]
+    H --> I{alu_src = 1?}
+    I -- Yes --> J[Use immediate as ALU input 2]
+    I -- No --> K[Use read_data2 as ALU input 2]
+    J --> L[Perform ALU operation]
+    K --> L
+    L --> M{Instruction type}
+    M -- lw --> N[Read data memory]
+    N --> O[Write memory data to rd]
+    M -- sw --> P[Write read_data2 to data memory]
+    P --> Q[PC = PC + 4]
+    M -- beq --> R{zero = 1?}
+    R -- Yes --> S[PC = branch target]
+    R -- No --> Q
+    M -- R-type --> T[Write ALU result to rd]
+    M -- addi --> T
+    O --> Q
+    T --> Q
+    S --> U[Next instruction]
+    Q --> U[Next instruction]
+    U --> D
